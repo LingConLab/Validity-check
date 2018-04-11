@@ -1,0 +1,199 @@
+---
+title: "Multilingualism"
+html_document:
+    include:
+      after_body: footer.html
+knit: (function(inputFile, encoding) { 
+      out_dir <- 'docs';
+      rmarkdown::render(inputFile,
+                        encoding=encoding, 
+                        output_file=file.path(dirname(inputFile), out_dir, 'index.html')) })
+---
+
+The data used in the project is from [https://multidagestan.com]. 
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(GGally)
+
+finall <- read_csv("~/Documents/GitHub/dag_api_parser/parser/finall.csv")
+```
+
+# Plotting multilingualism data. 
+
+Overall state:
+
+```{r, echo=FALSE}
+
+finall %>%
+  ggplot(aes(`5`))+
+  
+  geom_bar(aes(fill=`7`))+
+  
+  labs(y = "Count", x="")+ 
+  
+  theme(axis.text.x = element_text(angle = 50, hjust = 1))
+```
+
+## Using all data:
+
+
+```{r}
+finall_di <- subset(finall, finall$`7` == 'косвенно'|finall$`7` == 'лично')
+```
+
+
+### No clusterisation:
+
+Level of russian (comparing direct and indirect data):
+
+```{r, echo=FALSE}
+finall_di %>%
+  ggplot(aes(`1`, русский, color = `7`))+
+  
+  geom_smooth(method = "glm", 
+              method.args = list(family = "binomial"),
+              alpha = 0.5)+
+  
+  labs(color='Type')+
+
+  labs(x = "Age", y = "Russian language")
+```
+
+### Gender:
+
+All data:
+
+```{r, echo=FALSE}
+finall_di %>%
+  ggplot(aes(`1`, русский, color = `3`))+
+  
+  geom_smooth(method = "glm", 
+              method.args = list(family = "binomial"),
+              alpha = 0.5)+
+  
+  labs(color='Gender')+
+
+  labs(x = "Age", y = "Russian language")
+```
+
+Indirect data:
+
+```{r, echo=FALSE}
+finall_di[finall_di$`7`=='косвенно',] %>%
+  ggplot(aes(`1`, русский, color = `3`))+
+  
+  geom_smooth(method = "glm", 
+              method.args = list(family = "binomial"),
+              alpha = 0.5)+
+  
+  labs(color='Gender')+
+
+  labs(x = "Age", y = "Russian language")
+```
+
+Direct data: 
+
+```{r, echo=FALSE}
+finall_di[finall_di$`7`=='лично',] %>%
+  ggplot(aes(`1`, русский, color = `3`))+
+  
+  geom_smooth(method = "glm", 
+              method.args = list(family = "binomial"),
+              alpha = 0.5)+
+  
+  labs(color='Gender')+
+
+  labs(x = "Age", y = "Russian language")
+```
+
+### Comparing gender data:
+
+Only for men:
+
+```{r, echo=FALSE}
+finall_di[finall_di$`3`=='м',] %>%
+  ggplot(aes(`1`, русский, color = `7`))+
+  
+  geom_smooth(method = "glm", 
+              method.args = list(family = "binomial"),
+              alpha = 0.5)+
+  
+  labs(color='Type')+
+
+  labs(x = "Age", y = "Russian language")
+```
+
+Only for women:
+
+```{r, echo=FALSE}
+finall_di[finall_di$`3`=='ж',] %>%
+  ggplot(aes(`1`, русский, color = `7`))+
+  
+  geom_smooth(method = "glm", 
+              method.args = list(family = "binomial"),
+              alpha = 0.5)+
+  
+  labs(color='Type')+
+
+  labs(x = "Age", y = "Russian language")
+```
+
+### Mixed effect regression:
+
+For all data: 
+
+```{r, echo=FALSE}
+finall_di %>%
+  ggplot(aes(`1`, русский, color = `5`))+
+  
+  geom_smooth(method = "glm", 
+              method.args = list(family = "binomial"),
+              alpha = 0.3)+
+  
+  labs(x = "Age", y = "Russian language")+
+  
+  labs(color='Cluster') 
+```
+
+Indirect data
+
+
+```{r, echo=FALSE}
+cosv <- subset(finall, finall$`7` == 'косвенно')
+
+cosv %>%
+  ggplot(aes(`1`, русский, color = `5`))+
+  
+  geom_smooth(method = "glm", 
+              method.args = list(family = "binomial"),
+              alpha = 0.1)+
+  
+  labs(x = "Возраст", y = "Знание русского языка")+
+  
+  labs(color='Cluster') 
+```
+
+
+
+Direct data:
+
+```{r, echo=FALSE}
+
+pram <- subset(finall, finall$`7` == 'лично')
+
+pram %>%
+  ggplot(aes(`1`, русский, color = `5`))+
+  
+  geom_smooth(method = "glm", 
+              method.args = list(family = "binomial"),
+              alpha = 0.1)+
+  
+  labs(x = "Возраст", y = "Знание русского языка")+
+  
+  labs(color='Cluster')
+
+```
+
