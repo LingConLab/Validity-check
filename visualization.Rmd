@@ -23,6 +23,30 @@ finall <- read_csv("~/Documents/GitHub/dag_api_parser/parser/finall.csv")
 
 # Plotting multilingualism data. 
 
+Distribution:
+
+```{r, echo=FALSE}
+ggplot(finall, aes(русский, fill=finall$`3`)) +
+  geom_density(alpha = 0.4)
+```
+
+```{r, echo=FALSE}
+ggplot(finall, aes(русский, fill=finall$`7`)) +
+  geom_density(alpha = 0.4)
+```
+
+```{r, echo=FALSE}
+ggplot(finall, aes(finall$`1`, fill=русский)) +
+  geom_density(alpha = 0.4)
+```
+
+
+```{r, echo=FALSE}
+ggplot(finall, aes(русский, fill=finall$`5`)) +
+  geom_density(alpha = 0.4, position = "fill")
+```
+
+
 Overall state:
 
 ```{r, echo=FALSE}
@@ -196,4 +220,5 @@ pram %>%
   labs(color='Cluster')
 
 ```
+
 
