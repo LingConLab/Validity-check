@@ -221,4 +221,104 @@ pram %>%
 
 ```
 
+## Cluster plotting:
+
+```{r, echo=FALSE}
+claster <-  'Chuni, Tsukhta, Ubekimakhi'
+
+data <- subset(finall, finall$`5` == claster)
+
+data %>% 
+  ggplot(aes(`1`, кумыкский,color = `7`))+
+  
+  geom_smooth(method = "glm", 
+              method.args = list(family = "binomial"),
+              alpha = 0.3)+
+  
+  labs(x = "Age", y = "Kumikh language")+
+  
+  labs(color='How')+
+  
+  ggtitle('Chuni, Tsukhta, Ubekimakhi')
+
+```
+
+```{r, echo=FALSE}
+claster <-  "Kina, Gel'mets"
+
+data <- subset(finall, finall$`5` == claster)
+
+data %>% 
+  ggplot(aes(`1`, лезгинский,color = `7`))+
+  
+  geom_smooth(method = "glm", 
+              method.args = list(family = "binomial"),
+              alpha = 0.3)+
+  
+  labs(x = "Age", y = "Lezgian language")+
+  
+  labs(color='How')+
+  
+  ggtitle("Kina, Gel'mets")
+```
+
+
+```{r, echo=FALSE}
+claster <-  "Rikvani, Kizhani, Zilo"
+
+data <- subset(finall, finall$`5` == claster)
+
+data %>% 
+  ggplot(aes(`1`, чеченский,color = `7`))+
+  
+  geom_smooth(method = "glm", 
+              method.args = list(family = "binomial"),
+              alpha = 0.3)+
+  
+  labs(x = "Age", y = "Chechen language")+
+  
+  labs(color='Cluster')+
+  
+  ggtitle("Rikvani, Kizhani, Zilo")
+```
+
+
+```{r, echo=FALSE}
+claster <-  "Kina, Gel'mets"
+
+data <- subset(finall, finall$`5` == claster)
+
+data %>% 
+  ggplot(aes(`1`, азербайджанский,color = `7`))+
+  
+  geom_smooth(method = "glm", 
+              method.args = list(family = "binomial"),
+              alpha = 0.3)+
+  
+  labs(x = "Age", y = "Azerbaijan language")+
+  
+  labs(color='Cluster')+
+  
+  ggtitle("Kina, Gel'mets")
+```
+
+
+```{r, echo=FALSE}
+claster <-  "Balkhar, Tsulikana, Shukty, Kuli"
+
+data <- subset(finall, finall$`5` == claster)
+
+data %>% 
+  ggplot(aes(`1`, аварский,color = `7`))+
+  
+  geom_smooth(method = "glm", 
+              method.args = list(family = "binomial"),
+              alpha = 0.3)+
+  
+  labs(x = "Age", y = "Avar language")+
+  
+  labs(color='Cluster')+
+  
+  ggtitle("Balkhar, Tsulikana, Shukty, Kuli")
+```
 
