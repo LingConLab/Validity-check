@@ -33,6 +33,7 @@ class Parser:
         df_data = []
 
         for code in self.ids:
+
             resp_json = get(self.url.format(code)).json()
 
             try:
@@ -78,6 +79,11 @@ class Parser:
             df_data.append([name, birth, death, sex,
                             languages, expedition, residence, direct])
 
-        pd.DataFrame(df_data).to_csv('informants.csv')
+        pd.DataFrame(df_data, columns=['name', 'year of birth', 'year of death',
+                                       'sex', 'languages', 'expedition', 'residence',
+                                       'type']).to_csv('informants.csv')
 
-        return pd.DataFrame(df_data)
+
+if __name__ == '__main__':
+    p = Parser()
+    p.get_dataframe()

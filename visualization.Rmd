@@ -17,8 +17,11 @@ library(readr)
 library(dplyr)
 library(ggplot2)
 library(GGally)
+```
 
+```{r}
 finall <- read_csv("~/Documents/GitHub/dag_api_parser/parser/finall.csv")
+head(finall)
 ```
 
 # Plotting multilingualism data. 
@@ -26,7 +29,7 @@ finall <- read_csv("~/Documents/GitHub/dag_api_parser/parser/finall.csv")
 Distribution:
 
 ```{r, echo=FALSE}
-ggplot(finall, aes(русский, fill=finall$`3`)) +
+ggplot(finall, aes(русский, fill=finall$`year of birth`)) +
   geom_density(alpha = 0.4)
 ```
 
@@ -52,20 +55,23 @@ Overall state:
 ```{r, echo=FALSE}
 
 finall %>%
-  ggplot(aes(`5`))+
+  ggplot(aes(expedition))+
   
-  geom_bar(aes(fill=`7`))+
+  geom_bar(aes(fill=type))+
   
   labs(y = "Count", x="")+ 
   
-  theme(axis.text.x = element_text(angle = 50, hjust = 1))
+  theme(axis.text.x = element_text(angle = 50, hjust = 1))+ 
+  
+  scale_fill_discrete(breaks=c("косвенно", "лично", "неизвестно"), 
+                     labels = c("Direct", "Indirect", "Unknown"))
 ```
 
 ## Using all data:
 
 
 ```{r}
-finall_di <- subset(finall, finall$`7` == 'косвенно'|finall$`7` == 'лично')
+finall_di <- subset(finall, finall$type == 'косвенно'|finall$type == 'лично')
 ```
 
 
@@ -75,15 +81,18 @@ Level of russian (comparing direct and indirect data):
 
 ```{r, echo=FALSE}
 finall_di %>%
-  ggplot(aes(`1`, русский, color = `7`))+
+  ggplot(aes(`year of birth`, русский, color = type))+
   
   geom_smooth(method = "glm", 
               method.args = list(family = "binomial"),
               alpha = 0.5)+
   
-  labs(color='Type')+
+  scale_fill_discrete(name='Type',
+                      breaks=c("косвенно", "лично"),
+                      labels = c("Direct", "Indirect"))+
 
   labs(x = "Age", y = "Russian language")
+
 ```
 
 ### Gender:
@@ -138,8 +147,8 @@ finall_di[finall_di$`7`=='лично',] %>%
 Only for men:
 
 ```{r, echo=FALSE}
-finall_di[finall_di$`3`=='м',] %>%
-  ggplot(aes(`1`, русский, color = `7`))+
+finall_di[finall_di$sex=='м',] %>%
+  ggplot(aes(`year of birth`, русский, color = type))+
   
   geom_smooth(method = "glm", 
               method.args = list(family = "binomial"),
